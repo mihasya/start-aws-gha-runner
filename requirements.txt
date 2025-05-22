@@ -1,1 +1,1 @@
-git+https://github.com/mihasya/gha-runner.git@3819fa59155afad9a6e5810f9ca918d3cec6095a#egg=gha-runner
+git+https://github.com/mihasya/gha-runner.git@dd5ba804308780f772c40ecf9c89f0e03eaa0de8#egg=gha-runner
