@@ -206,24 +206,30 @@ class GitHubInstance:
             an error in the request or the response is not a mapping object.
         """
         runners = []
-        try:
-            res = self.get(f"repos/{self.repo}/actions/runners")
-            # This allows for arbitrary mappable objects to be used
-            if not isinstance(res, collections.abc.Mapping):
-                # This could be related to the API or the request itself.
-                # ie the response is not a JSON object
-                raise RunnerListError(f"Did not receive mapping object: {res}")
-            for runner in res["runners"]:
-                id = runner["id"]
-                name = runner["name"]
-                os = runner["os"]
-                labels = [label["name"] for label in runner["labels"]]
-                runners.append(SelfHostedRunner(id, name, os, labels))
-            return runners if len(runners) > 0 else None
-        except RuntimeError as e:
-            # This occurs when we receive a status code is > 400
-            raise RunnerListError(f"Error getting runners: {e}")
-            # Other exceptions are bubbled up to the caller
+        per_page = 1
+        page = 1
+        total_runners = float("inf")
+        while (len(runners) < total_runners):
+            try:
+                res = self.get(f"repos/{self.repo}/actions/runners?per_page={per_page}&page={page}")
+                # This allows for arbitrary mappable objects to be used
+                if not isinstance(res, collections.abc.Mapping):
+                    # This could be related to the API or the request itself.
+                    # ie the response is not a JSON object
+                    raise RunnerListError(f"Did not receive mapping object: {res}")
+                total_runners = res["total_count"]
+                page += 1
+                for runner in res["runners"]:
+                    id = runner["id"]
+                    name = runner["name"]
+                    os = runner["os"]
+                    labels = [label["name"] for label in runner["labels"]]
+                    runners.append(SelfHostedRunner(id, name, os, labels))
+            except RuntimeError as e:
+                # This occurs when we receive a status code is > 400
+                raise RunnerListError(f"Error getting runners: {e}")
+                # Other exceptions are bubbled up to the caller
+        return runners if len(runners) > 0 else None
 
     def get_runner(self, label: str) -> SelfHostedRunner:
         """Get a runner by a given label for a repository.
@@ -240,7 +246,6 @@ class GitHubInstance:
 
         """
         runners = self.get_runners()
-        print(f"mihasya: got this many runners: {len(runners)}")
         if runners is not None:
             for runner in runners:
                 if label in runner.labels:
