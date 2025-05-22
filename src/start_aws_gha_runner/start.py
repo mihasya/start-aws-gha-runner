@@ -158,7 +158,6 @@ class StartAWS(CreateCloudInstance):
         return params
 
     def create_instances(self) -> dict[str, str]:
-        print(f"mihasya: someone convince me we're actually running this code...")
         """Create instances on AWS.
 
         Creates and registers instances on AWS using the provided parameters.

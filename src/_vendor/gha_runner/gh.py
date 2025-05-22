@@ -206,9 +206,10 @@ class GitHubInstance:
             an error in the request or the response is not a mapping object.
         """
         runners = []
-        per_page = 1
+        per_page = 30 # GH API default
         page = 1
         total_runners = float("inf")
+        # paginate through the pages until we have all the runners
         while (len(runners) < total_runners):
             try:
                 res = self.get(f"repos/{self.repo}/actions/runners?per_page={per_page}&page={page}")
