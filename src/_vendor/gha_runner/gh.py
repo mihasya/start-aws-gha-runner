@@ -221,7 +221,7 @@ class GitHubInstance:
                 total_runners = res["total_count"]
                 page += 1
                 # protect from bug/issue where total_count is higher than actual # of runners
-                if len(res["runners"] < 1):
+                if len(res["runners"]) < 1:
                     break
                 for runner in res["runners"]:
                     id = runner["id"]
