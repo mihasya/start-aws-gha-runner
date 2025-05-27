@@ -5,9 +5,9 @@ import json
 
 import boto3
 from botocore.exceptions import ClientError
-from gha_runner import gh
-from gha_runner.clouddeployment import CreateCloudInstance
-from gha_runner.helper.workflow_cmds import output
+from _vendor.gha_runner import gh
+from _vendor.gha_runner.clouddeployment import CreateCloudInstance
+from _vendor.gha_runner.helper.workflow_cmds import output
 from copy import deepcopy
 
 

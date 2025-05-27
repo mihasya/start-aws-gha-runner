@@ -1,7 +1,7 @@
 from start_aws_gha_runner.start import StartAWS
-from gha_runner.gh import GitHubInstance
-from gha_runner.clouddeployment import DeployInstance
-from gha_runner.helper.input import EnvVarBuilder, check_required
+from _vendor.gha_runner.gh import GitHubInstance
+from _vendor.gha_runner.clouddeployment import DeployInstance
+from _vendor.gha_runner.helper.input import EnvVarBuilder, check_required
 import os
 
 
